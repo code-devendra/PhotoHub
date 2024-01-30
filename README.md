@@ -10,6 +10,7 @@ A REST API server for managing photos, collections, and memories.
 - [Installation](#installation)
 - [Usage](#usage)
 - [Technology](#technology)
+- [API Reference](#api-reference)
 - [Author](#author)
 - [License](#license)
 
@@ -43,9 +44,9 @@ The application exposes the following routes:
 Clone the repository and install dependencies
 
 ```bash
-  git clone https://github.com/your-username/photoHub-backend.git
+  git clone https://github.com/code-devendra/PhotoHub.git
 
-  cd photoHub-backend
+  cd PhotoHub
 
   npm install
 ```
@@ -86,7 +87,335 @@ npm start
 - multer
 - cloudinary
 
-## Authors
+## API-Reference
+
+### User
+
+#### Register user
+
+```http
+  POST /api/v1/users/register
+```
+
+###### body (form-data)
+
+| Parameter  | Type     | Description                        |
+| :--------- | :------- | :--------------------------------- |
+| `fullName` | `string` | **Required**. Name of the user     |
+| `email`    | `string` | **Required**. email id of the user |
+| `username` | `string` | **Required**. username of the user |
+| `password` | `string` | **Required**. user password        |
+| `avatar`   | `file`   | **Required**. photo of the user    |
+
+#### Login user
+
+```http
+  POST /api/v1/users/login
+```
+
+###### body
+
+| Parameter           | Type     | Description                                   |
+| :------------------ | :------- | :-------------------------------------------- |
+| `email or username` | `string` | **Required**. email id / username of the user |
+| `password`          | `string` | **Required**. profile password                |
+
+#### Refresh Token
+
+```http
+  POST /api/v1/users/refresh-token
+```
+
+#### Logout
+
+```http
+  POST /api/v1/users/logout
+```
+
+#### Change Password
+
+```http
+  PATCH /api/v1/users/change-password
+```
+
+###### body
+
+| Parameter     | Type     | Description                        |
+| :------------ | :------- | :--------------------------------- |
+| `oldPassword` | `string` | **Required**. profile old password |
+| `newPassword` | `string` | **Required**. profile new password |
+
+#### who am i
+
+```http
+  GET /api/v1/users/whoami
+```
+
+#### Update Account Details
+
+```http
+  PATCH /api/v1/users/update-account
+```
+
+###### body
+
+| Parameter  | Type     | Description                        |
+| :--------- | :------- | :--------------------------------- |
+| `fullName` | `string` | **Required**. Name of the user     |
+| `email`    | `string` | **Required**. email id of the user |
+
+#### Update Avatar
+
+```http
+  PATCH /api/v1/users/avatar
+```
+
+###### body (form-data)
+
+| Parameter | Type   | Description                     |
+| :-------- | :----- | :------------------------------ |
+| `avatar`  | `file` | **Required**. photo of the user |
+
+#### Get user profile
+
+```http
+  GET /api/v1/users/p/:username
+```
+
+###### params
+
+| Parameter  | Type     | Description                    |
+| :--------- | :------- | :----------------------------- |
+| `username` | `string` | **Required**. profile username |
+
+### Photo
+
+#### Create photo
+
+```http
+  POST /api/v1/photos
+```
+
+###### body (form-data)
+
+| Parameter     | Type      | Description                     |
+| :------------ | :-------- | :------------------------------ |
+| `title`       | `string`  | **Required**. photo title       |
+| `description` | `string`  | **Optional**. photo description |
+| `isPublic`    | `boolean` | **Optional**. by default true   |
+| `photo`       | `file`    | **Required**. photo file        |
+
+#### Get all photos with search and pagination
+
+```http
+  GET /api/v1/photos
+```
+
+###### query
+
+| Parameter  | Type     | Description                                  |
+| :--------- | :------- | :------------------------------------------- |
+| `query`    | `string` | **Optional**. search query                   |
+| `page`     | `number` | **Optional**. page no.                       |
+| `limit`    | `number` | **Optional**. response limit                 |
+| `sortBy`   | `string` | **Optional**. either creadtedAt or likeCount |
+| `sortType` | `number` | **Optional**. either 1 or -1                 |
+
+#### Get one photo
+
+```http
+  GET /api/v1/photos/:photoId
+```
+
+###### params
+
+| Parameter | Type     | Description           |
+| :-------- | :------- | :-------------------- |
+| `photoId` | `string` | **Required**. photoId |
+
+#### Delete photo
+
+```http
+  DELETE /api/v1/photos/:photoId
+```
+
+###### params
+
+| Parameter | Type     | Description           |
+| :-------- | :------- | :-------------------- |
+| `photoId` | `string` | **Required**. photoId |
+
+#### Update photo details
+
+```http
+  PATCH /api/v1/photos/:photoId
+```
+
+###### params
+
+| Parameter | Type     | Description           |
+| :-------- | :------- | :-------------------- |
+| `photoId` | `string` | **Required**. photoId |
+
+###### body (form-data)
+
+| Parameter     | Type     | Description                     |
+| :------------ | :------- | :------------------------------ |
+| `title`       | `string` | **Required**. photo title       |
+| `description` | `string` | **Optional**. photo description |
+| `photo`       | `file`   | **Optional**. photo file        |
+
+#### Toggle public mode
+
+```http
+  PATCH /api/v1/photos/toggle/public/:photoId
+```
+
+###### params
+
+| Parameter | Type     | Description           |
+| :-------- | :------- | :-------------------- |
+| `photoId` | `string` | **Required**. photoId |
+
+### Set
+
+#### Create set
+
+```http
+  POST /api/v1/sets
+```
+
+###### body
+
+| Parameter     | Type     | Description                   |
+| :------------ | :------- | :---------------------------- |
+| `title`       | `string` | **Required**. set title       |
+| `description` | `string` | **Required**. set description |
+
+#### Get set info
+
+```http
+  GET /api/v1/sets/:setId
+```
+
+###### params
+
+| Parameter | Type     | Description         |
+| :-------- | :------- | :------------------ |
+| `setId`   | `string` | **Required**. setId |
+
+#### Update set
+
+```http
+  PATCH /api/v1/sets/:setId
+```
+
+###### params
+
+| Parameter | Type     | Description         |
+| :-------- | :------- | :------------------ |
+| `setId`   | `string` | **Required**. setId |
+
+###### body
+
+| Parameter     | Type     | Description                   |
+| :------------ | :------- | :---------------------------- |
+| `title`       | `string` | **Required**. set title       |
+| `description` | `string` | **Required**. set description |
+
+#### Delete set
+
+```http
+  DELETE /api/v1/sets/:setId
+```
+
+###### params
+
+| Parameter | Type     | Description         |
+| :-------- | :------- | :------------------ |
+| `setId`   | `string` | **Required**. setId |
+
+#### Add photo to a Set
+
+```http
+  PATCH /api/v1/sets/add/:photoId/:setId
+```
+
+###### params
+
+| Parameter | Type     | Description           |
+| :-------- | :------- | :-------------------- |
+| `photoId` | `string` | **Required**. photoId |
+| `setId`   | `string` | **Required**. setId   |
+
+#### Remove photo to a Set
+
+```http
+  PATCH /api/v1/sets/add/:photoId/:setId
+```
+
+###### params
+
+| Parameter | Type     | Description           |
+| :-------- | :------- | :-------------------- |
+| `photoId` | `string` | **Required**. photoId |
+| `setId`   | `string` | **Required**. setId   |
+
+#### Get user sets
+
+```http
+  GET /api/v1/sets/user/:userId
+```
+
+###### params
+
+| Parameter | Type     | Description          |
+| :-------- | :------- | :------------------- |
+| `userId`  | `string` | **Required**. userId |
+
+### Like
+
+#### Toggle Like
+
+```http
+  POST /api/v1/likes/toggle/p/:photoId
+```
+
+###### params
+
+| Parameter | Type     | Description           |
+| :-------- | :------- | :-------------------- |
+| `photoId` | `string` | **Required**. photoId |
+
+#### Get all liked photos
+
+```http
+  GET /api/v1/likes/photos
+```
+
+### Dashboard
+
+#### Get Profile stats
+
+```http
+  GET /api/v1/dashboard/stats
+```
+
+#### Get all photos uploaded by user
+
+```http
+  GET /api/v1/dashboard/photos
+```
+
+### Healthcheck
+
+#### check health
+
+```http
+  GET /api/v1/healthcheck
+```
+
+## Author
 
 - [@codedevendra](https://www.github.com/code-devendra) (Devendra Khinchi)
 
