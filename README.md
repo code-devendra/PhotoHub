@@ -43,9 +43,9 @@ The application exposes the following routes:
 Clone the repository and install dependencies
 
 ```bash
-  git clone https://github.com/your-username/photoHub-backend.git
+  git clone https://github.com/code-devendra/PhotoHub.git
 
-  cd photoHub-backend
+  cd PhotoHub
 
   npm install
 ```
