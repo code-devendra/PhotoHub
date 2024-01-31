@@ -5,10 +5,13 @@ const likeSchema = new Schema(
     photo: {
       type: Schema.Types.ObjectId,
       ref: "Photo",
+      required: true,
+      index: true,
     },
     likedBy: {
       type: Schema.Types.ObjectId,
       ref: "User",
+      required: true,
     },
   },
   {

@@ -20,6 +20,8 @@ const photoSchema = new Schema(
     owner: {
       type: Schema.Types.ObjectId,
       ref: "User",
+      required: true,
+      index: true,
     },
     setBelongsTo: {
       type: Schema.Types.ObjectId,
